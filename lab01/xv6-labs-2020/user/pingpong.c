@@ -8,13 +8,15 @@ int main(int argc, char* argv[]) {
     pipe(pc2p);
 
     if(fork() != 0) {
+        // 父进程先写后读
         write(pp2c[1], "p", 1);
-        
+  
         char buf;
         read(pc2p[0], &buf, sizeof buf);
         fprintf(1, "%d: received pong\n", getpid());
         wait(0);
     } else {
+        // 子进程先读后写
         char buf;
         read(pp2c[0], &buf, sizeof buf);
         fprintf(1, "%d: received ping\n", getpid());

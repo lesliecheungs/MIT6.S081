@@ -4,10 +4,11 @@
 #include "kernel/fs.h"
 
 #define BUFSIZE 512
-static char target[DIRSIZ];
-static char path[BUFSIZE];
+static char target[DIRSIZ]; // 存储目标文件名称
+static char path[BUFSIZE];	// 存储当前所在的文件路径
 
 
+// 在当前路径中，提取最后的一个文件的名称
 char* fmtname()
 {
     static char buf[DIRSIZ+1];
@@ -45,11 +46,12 @@ void search()
     }
 
     switch(st.type){
+        // 如果是文件的话，直接进行判断
         case T_FILE:
             if(strcmp(target, fmtname()) == 0)
                 printf("%s\n", path);
             break;
-
+		// 如果是文件夹的话，需要先判断文件夹是否存在文件，并且不陷入自环(.和..)再继续递归
         case T_DIR:
             p = path+strlen(path);
             *p++ = '/';
